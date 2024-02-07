@@ -74,3 +74,13 @@ gem "tailwindcss-rails", "~> 2.3"
 gem "activerecord-postgis-adapter", "~> 9.0"
 
 gem "devise", "~> 4.9"
+
+gem "omniauth", "~> 2.1"
+
+gem "omniauth-google-oauth2", "~> 1.1"
+
+gem "omniauth-rails_csrf_protection", "~> 1.0"
+
+gem "pry-byebug", "~> 3.10"
+
+gem "rubocop", "~> 1.60"
