@@ -72,3 +72,5 @@ end
 gem "tailwindcss-rails", "~> 2.3"
 
 gem "activerecord-postgis-adapter", "~> 9.0"
+
+gem "devise", "~> 4.9"
