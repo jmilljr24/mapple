@@ -10,7 +10,25 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <main class="container mx-auto mt-28 px-5 flex flex-col">
+      <div class="flex justify-between w-full">
+        <% if  user_signed_in? %>
+          <%= button_to(
+          "Log Out",
+          destroy_user_session_path,
+          method: :delete
+        ) %>
+        <% else %>
+          <%= button_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path, data: { turbo: false } %>
+        <% end %>
+        <div>
+          <% if user_signed_in? %>
+            <%= image_tag current_user.image, class:
+                "object-cover h-24 w-24 rounded-full" %>
+            <strong><%= current_user.name %></strong>
+          <% end %>
+        </div>
+      </div>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
       <%= yield %>
