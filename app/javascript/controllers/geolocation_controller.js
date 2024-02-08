@@ -9,12 +9,13 @@ const options = {
 export default class extends Controller {
   static values = {
     url: String,
-    lat: Number,
-    lon: Number,
+    lonlatheight: String,
   };
 
-  static targets = ["output"];
-
+  static targets = ["output", "form", "field"];
+  connect() {
+    console.log(this.lonlatheightValue);
+  }
   search() {
     navigator.geolocation.getCurrentPosition(
       this.success.bind(this),
@@ -24,9 +25,17 @@ export default class extends Controller {
   }
 
   success(pos) {
-    let output = pos.coords;
-    console.log(pos);
-    this.outputTarget.textContent = output;
+    let x = pos.coords.longitude;
+    let y = pos.coords.latitude;
+    let z = pos.coords.altitude;
+    let location = null;
+    if (z !== null) {
+      location = "POINT(" + x + " " + y + " " + z + ")";
+    } else {
+      location = "POINT(" + x + " " + y + ")";
+    }
+
+    this.fieldTarget.setAttribute("value", location);
   }
 
   error(err) {

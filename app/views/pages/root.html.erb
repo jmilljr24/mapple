@@ -1,8 +1,8 @@
-<div data-controller="geolocation" data-loader-lat-value="" data-loader-lon-value="">
+<div data-controller="geolocation" data-geolocation-lonlatheight-value="nil">
   <button data-action="geolocation#search">search near me</button>
-  <div data-geolocation-target="output"></div>
   <%= form_with url:  spatials_path do |form| %>
-    <%= form.text_field :coords %>
+    <%= form.hidden_field :coords, data: { geolocation_target: "field" } %>
     <%= form.submit %>
+    <div data-geolocation-target="output"></div>
   <% end %>
 </div>
