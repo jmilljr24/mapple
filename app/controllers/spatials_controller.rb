@@ -1,0 +1,2 @@
+class SpatialsController < ApplicationController
+end

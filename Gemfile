@@ -84,3 +84,5 @@ gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem "pry-byebug", "~> 3.10"
 
 gem "rubocop", "~> 1.60"
+
+gem "rgeo", "~> 3.0"
