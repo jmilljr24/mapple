@@ -12,7 +12,7 @@ export default class extends Controller {
     lonlatheight: String,
   };
 
-  static targets = ["output", "form", "field"];
+  static targets = ["output", "form", "field", "submit"];
   connect() {
     console.log(this.lonlatheightValue);
   }
@@ -36,6 +36,9 @@ export default class extends Controller {
     }
 
     this.fieldTarget.setAttribute("value", location);
+    console.log(this.formTarget);
+    this.formTarget.submit();
+    this.outputTarget.innerHTML = "Lat: " + y + ", Lon: " + x;
   }
 
   error(err) {

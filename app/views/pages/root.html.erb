@@ -1,8 +1,8 @@
 <div data-controller="geolocation" data-geolocation-lonlatheight-value="nil">
   <button data-action="geolocation#search">search near me</button>
-  <%= form_with url:  spatials_path do |form| %>
-    <%= form.hidden_field :coords, data: { geolocation_target: "field" } %>
-    <%= form.submit %>
+  <%= form_with url:  spatials_path, data: {geolocation_target: "form"} do |form| %>
+    <%= form.hidden_field :coords, data: {geolocation_target: "field"} %>
+    <%= form.submit 'submit', class: "hidden", data: { geolocation_target: "submit"}  %>
     <div data-geolocation-target="output"></div>
   <% end %>
 </div>
