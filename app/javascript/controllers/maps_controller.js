@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="maps"
 export default class extends Controller {
-  static targets = ["map", "listings"];
+  static targets = ["map", "listings", "maple"];
   connect() {
     console.log("Connecting maps");
     if (window.google) {
@@ -17,6 +17,15 @@ export default class extends Controller {
     const map = new google.maps.Map(this.mapTarget, {
       zoom: 4,
       center: position,
+      mapId: "DEMO_MAP_ID",
+    });
+    map.addListener("mapcapabilities_changed", () => {
+      const mapCapabilities = map.getMapCapabilities();
+
+      if (!mapCapabilities.isAdvancedMarkersAvailable) {
+        // Advanced markers are *not* available, add a fallback.
+        console.log("no advanced markers");
+      }
     });
 
     this.addMarkers(map);
@@ -40,6 +49,7 @@ export default class extends Controller {
           lng: parseFloat(listing.dataset.lng),
         },
         map,
+        icon: this.mapleTarget.innerHTML,
       });
     });
   }

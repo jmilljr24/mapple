@@ -17,7 +17,7 @@
         window.dispatchEvent(event);
       };
     </script>
-    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{Rails.application.credentials.maps_api_key!}&libraries=places&callback=initMap"%>
+    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{Rails.application.credentials.maps_api_key!}&libraries=places,marker&callback=initMap"%>
   </head>
   <body>
     <main class="container mx-auto mt-28 px-5 flex flex-col">

@@ -1,4 +1,5 @@
 <div data-controller="geolocation maps">
+  <div data-maps-target="maple" class="hidden"><%= image_path("mini2.png") %></div>
   <button data-action="geolocation#search">search near me</button>
   <%= form_with url:  spatials_path, data: {geolocation_target: "form"} do |form| %>
     <%= form.hidden_field :coords, data: {geolocation_target: "field"} %>
