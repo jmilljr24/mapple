@@ -22,7 +22,7 @@
           <%= button_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path, data: { turbo: false } %>
         <% end %>
         <div>
-          <% if user_signed_in? %>
+          <% if user_signed_in? && current_user.image %>
             <%= image_tag current_user.image, class:
                 "object-cover h-24 w-24 rounded-full" %>
             <strong><%= current_user.name %></strong>
