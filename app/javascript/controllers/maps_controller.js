@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 // Connects to data-controller="maps"
 export default class extends Controller {
@@ -42,15 +43,20 @@ export default class extends Controller {
   }
 
   addMarkers(map) {
+    let markers = [];
+
     Array.from(this.listingsTarget.children).forEach((listing) => {
-      new google.maps.Marker({
-        position: {
-          lat: parseFloat(listing.dataset.lat),
-          lng: parseFloat(listing.dataset.lng),
-        },
-        map,
-        icon: this.mapleTarget.innerHTML,
-      });
+      markers.push(
+        new google.maps.Marker({
+          position: {
+            lat: parseFloat(listing.dataset.lat),
+            lng: parseFloat(listing.dataset.lng),
+          },
+          map,
+          icon: this.mapleTarget.innerHTML,
+        })
+      );
     });
+    let markerCluster = new MarkerClusterer({ map, markers });
   }
 }
