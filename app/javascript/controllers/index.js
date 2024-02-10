@@ -2,10 +2,20 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import { application } from "./application";
 
-import GeolocationController from "./geolocation_controller"
-application.register("geolocation", GeolocationController)
+import GeolocationController from "./geolocation_controller";
+application.register("geolocation", GeolocationController);
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import HelloController from "./hello_controller";
+application.register("hello", HelloController);
+
+import MapsController from "./maps_controller";
+application.register("maps", MapsController);
+
+window.initMap = () => {
+  console.log("initMap was called");
+  const event = new Event("MapLoaded");
+  event.initEvent("map-loaded", true, true);
+  window.dispatchEvent(event);
+};

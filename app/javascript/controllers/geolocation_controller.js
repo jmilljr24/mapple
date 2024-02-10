@@ -9,13 +9,10 @@ const options = {
 export default class extends Controller {
   static values = {
     url: String,
-    lonlatheight: String,
   };
 
   static targets = ["output", "form", "field", "submit"];
-  connect() {
-    console.log(this.lonlatheightValue);
-  }
+  connect() {}
   search() {
     navigator.geolocation.getCurrentPosition(
       this.success.bind(this),
@@ -37,7 +34,7 @@ export default class extends Controller {
 
     this.fieldTarget.setAttribute("value", location);
     console.log(this.formTarget);
-    this.formTarget.submit();
+    // this.formTarget.submit();
     this.outputTarget.innerHTML = "Lat: " + y + ", Lon: " + x;
   }
 
