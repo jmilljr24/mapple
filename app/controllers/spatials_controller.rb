@@ -10,9 +10,12 @@ class SpatialsController < ApplicationController
     @spatial.lonlatheight = params[:coords]
 
     if @spatial.save
-      puts @spatial
+      redirect_to @spatial
     else
       puts "did not save"
     end
+  end
+
+  def show
   end
 end
