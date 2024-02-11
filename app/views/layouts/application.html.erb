@@ -9,6 +9,8 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload",
     type: "module" %>
+    <%
+=begin  %>
     <script>
       window.initMap = () => {
         console.log("initMap was called");
@@ -17,7 +19,9 @@
         window.dispatchEvent(event);
       };
     </script>
-    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{Rails.application.credentials.maps_api_key!}&libraries=places,marker&callback=initMap"%>
+    <%
+=end  %>
+    <%# javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{Rails.application.credentials.maps_api_key!}&libraries=places,marker&callback=initMap"%>
   </head>
   <body>
     <main class="container mx-auto mt-28 px-5 flex flex-col">

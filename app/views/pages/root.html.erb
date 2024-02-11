@@ -1,6 +1,8 @@
-<div data-controller="geolocation maps">
-  <div data-maps-target="maple" class="hidden"><%= image_path("mini2.png") %></div>
-  <button data-action="geolocation#search">search near me</button>
+<div data-controller="geolocation gmaps">
+  <button data-action="gmaps#markers">trigger</button>
+  <div data-gmaps-api-value="<%= Rails.application.credentials.maps_api_key! %>"></div>
+  <div data-gmaps-target="maple" class="hidden"><%= image_path("mini2.png") %></div>
+  <button data-action="geolocation#search ">search near me</button>
   <%= form_with url:  spatials_path, data: {geolocation_target: "form"} do |form| %>
     <%= form.hidden_field :coords, data: {geolocation_target: "field"} %>
     <%= form.hidden_field :latitude, data: {maps_target: "latitude"} %>
@@ -8,8 +10,8 @@
     <%= form.submit 'submit', class: "", data: { geolocation_target: "submit"}  %>
     <div data-geolocation-target="output"></div>
   <% end %>
-  <div id="map" data-maps-target="map" class="h-[50rem] w-[50rem]"></div>
-  <ul role="listing" data-maps-target="listings">
+  <div id="map" data-gmaps-target="map" class="h-[50rem] w-[50rem]"></div>
+  <ul role="listing" data-gmaps-target="listings">
     <% current_user.spatials.each do |spatial|%>
       <li data-lat="<%= spatial.lonlatheight.y %>" data-lng="<%= spatial.lonlatheight.x %>">
       </li>
