@@ -18,4 +18,10 @@ class SpatialsController < ApplicationController
 
   def show
   end
+
+  private
+
+  def spatial
+    @_spatial ||= Spatial.find(params[:spatial_id])
+  end
 end
