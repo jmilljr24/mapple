@@ -40,14 +40,18 @@ export default class extends Controller {
     return this._map;
   }
   marker(lat, lng) {
-    var latLng = new google.maps.LatLng(lat, lng);
+    const latLng = new google.maps.LatLng(lat, lng);
+    const mapleIcon = document.createElement("img");
+
+    mapleIcon.src = this.mapleTarget.innerHTML;
     this._marker = new google.maps.marker.AdvancedMarkerElement({
       map: this.map(),
       position: latLng,
+      content: mapleIcon,
+
       // icon: this.mapleTarget.innerHTML,
     });
 
-    console.log(this._marker);
     this._markers.push(this._marker);
   }
   adddbmarkers() {
