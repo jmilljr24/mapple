@@ -52,7 +52,7 @@ export default class extends Controller {
 
     return this._map;
   }
-  marker(lat, lng) {
+  marker(lat, lng, taps) {
     const latLng = new google.maps.LatLng(lat, lng);
     const mapleIcon = document.createElement("img");
     const infoWindow = new google.maps.InfoWindow();
@@ -69,7 +69,15 @@ export default class extends Controller {
 
       infoWindow.close();
       infoWindow.setContent(
-        "<p>Lat: " + lat + "<br>" + " Lon: " + lng + "</p>"
+        "<strong>Taps: " +
+          taps +
+          "</strong>" +
+          "<p>Lat: " +
+          lat +
+          "<br>" +
+          " Lon: " +
+          lng +
+          "</p>"
       );
       infoWindow.open(marker.map, marker);
     });
@@ -83,7 +91,8 @@ export default class extends Controller {
       }
       this.marker(
         parseFloat(listing.dataset.lat),
-        parseFloat(listing.dataset.lng)
+        parseFloat(listing.dataset.lng),
+        listing.dataset.taps
       );
     });
   }

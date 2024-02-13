@@ -6,7 +6,8 @@
   <ul role="listing" data-gmaps-target="listings">
     <% current_user.spatials.each do |spatial|%>
       <% unless spatial.lonlatheight.nil? %>
-        <li data-lat="<%= spatial.lonlatheight.y %>" data-lng="<%= spatial.lonlatheight.x %>">
+        <li data-lat="<%= spatial.lonlatheight.y %>" data-lng="<%=
+        spatial.lonlatheight.x %>" data-taps="<%= spatial.taps %>">
         </li>
       <% end %>
     <% end%>
