@@ -1,12 +1,15 @@
-<div data-geolocation-target="output">Retrieving GPS Coordinates...</div>
-<%= form_with(url: spatials_path, method: :post, data: {geolocation_target: "form"}) do |form| %>
-  <%= form.hidden_field :coords, data: {geolocation_target: "field"} %>
-  <%= form.label :taps %>
-  <%= form.number_field :taps %>
-  <p></p>
-  <%= form.label :species %>
-  <%= form.number_field :species, placeholder: 'optional' %>
-  <%# form.hidden_field :latitude, data: {maps_target: "latitude"} %>
-  <%# form.hidden_field :longitude, data: {maps_target: "longitude"} %>
-  <%= form.submit 'submit', class: "", data: { geolocation_target: "submit"}  %>
-<% end %>
+<div id="position-form">
+  <button data-action="geolocation#search">Retrieve Position</button>
+  <div data-geolocation-target="output"></div>
+  <%= form_with(url: spatials_path, method: :post, data: {geolocation_target: "form"}) do |form| %>
+    <%= form.hidden_field :coords, data: {geolocation_target: "field"} %>
+    <%= form.label :taps %>
+    <%= form.number_field :taps %>
+    <p></p>
+    <%= form.label :species %>
+    <%= form.number_field :species, placeholder: 'optional' %>
+    <%# form.hidden_field :latitude, data: {maps_target: "latitude"} %>
+    <%# form.hidden_field :longitude, data: {maps_target: "longitude"} %>
+    <%= form.submit 'submit', class: "", data: { geolocation_target: "submit"}  %>
+  <% end %>
+</div>

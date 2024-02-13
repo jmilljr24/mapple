@@ -12,9 +12,7 @@ export default class extends Controller {
   };
 
   static targets = ["output", "form", "field", "submit"];
-  connect() {
-    this.search();
-  }
+  connect() {}
   search() {
     navigator.geolocation.getCurrentPosition(
       this.success.bind(this),

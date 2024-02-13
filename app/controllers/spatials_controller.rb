@@ -12,7 +12,9 @@ class SpatialsController < ApplicationController
         format.turbo_stream { flash.now[:notice] = "Position saved to database" }
       end
     else
-      puts "did not save"
+      respond_to do |format|
+        format.turbo_stream { flash.now[:alert] = "Lat and Long Required" }
+      end
     end
   end
 
