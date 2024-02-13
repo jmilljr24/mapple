@@ -55,17 +55,24 @@ export default class extends Controller {
   marker(lat, lng) {
     const latLng = new google.maps.LatLng(lat, lng);
     const mapleIcon = document.createElement("img");
+    const infoWindow = new google.maps.InfoWindow();
 
     mapleIcon.src = this.mapleTarget.innerHTML;
-    this._marker = new google.maps.marker.AdvancedMarkerElement({
+    const marker = new google.maps.marker.AdvancedMarkerElement({
       map: this.map(),
       position: latLng,
       content: mapleIcon,
-
-      // icon: this.mapleTarget.innerHTML,
     });
 
-    this._markers.push(this._marker);
+    marker.addListener("click", ({ domEvent, latLng }) => {
+      const { target } = domEvent;
+
+      infoWindow.close();
+      infoWindow.setContent("test");
+      infoWindow.open(marker.map, marker);
+    });
+
+    this._markers.push(marker);
   }
   adddbmarkers() {
     Array.from(this.listingsTarget.children).forEach((listing) => {
