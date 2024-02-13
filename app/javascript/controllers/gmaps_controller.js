@@ -68,7 +68,9 @@ export default class extends Controller {
       const { target } = domEvent;
 
       infoWindow.close();
-      infoWindow.setContent("test");
+      infoWindow.setContent(
+        "<p>Lat: " + lat + "<br>" + " Lon: " + lng + "</p>"
+      );
       infoWindow.open(marker.map, marker);
     });
 
