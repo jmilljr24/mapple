@@ -11,6 +11,18 @@ export default class extends Controller {
 
   connect() {
     this.map();
+    window.onload = (event) => {
+      this.markers();
+      console.log(this.listingsTarget.lastElementChild);
+      let lastPosition = this.listingsTarget.lastElementChild;
+      const latLng = new google.maps.LatLng(
+        parseFloat(lastPosition.dataset.lat),
+        parseFloat(lastPosition.dataset.lng)
+      );
+      console.log(Object.getOwnPropertyNames(this.map()));
+      this.map().panTo(latLng);
+      this.map().setZoom(15);
+    };
   }
 
   map() {
@@ -23,7 +35,8 @@ export default class extends Controller {
 
       const mapOptions = {
         center: { lat: 40, lng: -75 },
-        zoom: 5,
+        zoom: 4,
+        mapTypeId: "terrain",
         mapId: "DEMO_MAP_ID",
       };
 

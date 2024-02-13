@@ -1,4 +1,4 @@
 <% spatial = Spatial.find_by(id: params[:id]) %>
 <%= image_tag(
-"https://maps.googleapis.com/maps/api/staticmap?zoom=14&size=384x288&markers=color:green|#{spatial.lonlatheight.y},#{spatial.lonlatheight.x}&key=#{Rails.application.credentials.maps_api_key!}&maptype=terrain",
+"https://maps.googleapis.com/maps/api/staticmap?zoom=14&size=384x288&markers=icon:#{image_path('mini2.png')}|#{spatial.lonlatheight.y},#{spatial.lonlatheight.x}&key=#{Rails.application.credentials.maps_api_key!}&maptype=terrain",
  class: "h-72 w-96")%>
