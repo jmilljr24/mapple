@@ -1,9 +1,24 @@
 class SpatialsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_spatial, only: %i[show edit update destroy]
+
+  def index
+    @spatials = Spatials.all
+  end
+
+  def show
+  end
+
+  def new
+    @spatial = Spatial.new
+  end
+
+  def edit
+  end
 
   def create
-    @spatial = current_user.spatials.build
-    @spatial.lonlatheight = params[:coords]
+    @spatial = current_user.spatials.build(spatial_params)
+    # @spatial.lonlatheight = params[:coords]
 
     if @spatial.save
 
@@ -18,12 +33,34 @@ class SpatialsController < ApplicationController
     end
   end
 
-  def show
+  def update
+    respond_to do |format|
+      if @spatial.update(spatial_params)
+        format.html { redirect_to root_path, notice: "Tree was successfully updated." }
+
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+
+      end
+    end
+  end
+
+  def destroy
+    @spatial.destroy!
+
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: "Example was successfully destroyed." }
+      format.json { head :no_content }
+    end
   end
 
   private
 
-  def spatial
-    @_spatial ||= Spatial.find(params[:spatial_id])
+  def set_spatial
+    @spatial = Spatial.find(params[:id])
+  end
+
+  def spatial_params
+    params.require(:spatial).permit(:lonlatheight, :taps, :species, :user_id)
   end
 end
