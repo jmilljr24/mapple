@@ -66,7 +66,7 @@ export default class extends Controller {
 
     marker.addListener("click", ({ domEvent, latLng }) => {
       const { target } = domEvent;
-
+      console.log("infoWindow");
       infoWindow.close();
       infoWindow.setContent(
         "<strong>Taps: " +
@@ -80,7 +80,11 @@ export default class extends Controller {
           "</p> <br>" +
           '<a href="/spatials/' +
           id +
-          '/edit">Edit</a> '
+          '/edit">Edit</a>' +
+          "<br>" +
+          '<button data-action="gmaps#deleteMarkers" data-gmaps-id-param="delete_' +
+          id +
+          '">Delete</button>'
       );
       infoWindow.open(marker.map, marker);
     });
@@ -106,5 +110,10 @@ export default class extends Controller {
       map: this._map,
       markers: this._markers,
     });
+  }
+  deleteMarkers({ params }) {
+    if (confirm("Are you sure you want to delete this marker?") == true) {
+      document.getElementById(params.id).click();
+    }
   }
 }

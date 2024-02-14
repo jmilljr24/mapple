@@ -1,5 +1,4 @@
 <div id="position-form">
-  <button data-action="geolocation#search">Retrieve Position</button>
   <div data-geolocation-target="output"></div>
   <%= form_with(model: @spatial, data: {geolocation_target: "form"}) do |form| %>
     <%= form.hidden_field :lonlatheight, data: {geolocation_target: "field"} %>
@@ -8,8 +7,11 @@
     <p></p>
     <%= form.label :species %>
     <%= form.number_field :species, placeholder: 'optional' %>
-    <%# form.hidden_field :latitude, data: {maps_target: "latitude"} %>
-    <%# form.hidden_field :longitude, data: {maps_target: "longitude"} %>
-    <%= form.submit 'submit', class: "", data: { geolocation_target: "submit"}  %>
+    <%= form.submit 'submit', class: "", data: { turbo: false, geolocation_target: "submit"}  %>
   <% end %>
 </div>
+<% if @spatial.id %>
+  <%= button_to "Delete", spatial_path(@spatial), method: :delete,
+data: {turbo: false }, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100
+font-medium" %>
+<% end %>

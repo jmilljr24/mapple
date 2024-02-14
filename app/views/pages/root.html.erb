@@ -1,6 +1,8 @@
 <div data-controller="geolocation gmaps">
   <div data-gmaps-api-value="<%= Rails.application.credentials.maps_api_key! %>"></div>
-  <div data-gmaps-target="maple" class="hidden"><%= image_path("mini2.png")%> </div>
+  <div data-gmaps-target="maple" class="hidden"><%= image_path("mini2.png")%>
+  </div>
+  <button data-action="geolocation#search">Retrieve Position</button>
   <%= render 'spatials/form', locals: { spatial: @spatial } %>
   <div id="map" data-gmaps-target="map" class="h-[50rem] w-[50rem]"></div>
   <ul role="listing" data-gmaps-target="listings">
@@ -8,7 +10,10 @@
       <% unless spatial.lonlatheight.nil? %>
         <li data-lat="<%= spatial.lonlatheight.y %>" data-lng="<%=
         spatial.lonlatheight.x %>" data-taps="<%= spatial.taps %>" data-id="<%= spatial.id %>">
-          <%= link_to '', edit_spatial_path(spatial.id), class: 'hidden', id: spatial.id %>
+          <%= link_to '', edit_spatial_path(spatial.id), class: 'hidden', id:
+          spatial.id %>
+          <%= button_to "Delete", spatial_path(spatial.id), method: :delete,
+            data: {turbo: false }, id: "delete_" + spatial.id.to_s, class: "hidden" %>
         </li>
       <% end %>
     <% end%>

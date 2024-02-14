@@ -24,8 +24,10 @@
     <%# javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{Rails.application.credentials.maps_api_key!}&libraries=places,marker&callback=initMap"%>
   </head>
   <body>
+    <%= render partial: "layouts/flash_message" %>
     <main class="container mx-auto mt-28 px-5 flex flex-col">
       <div class="flex justify-between w-full">
+        <%= link_to 'Home', root_path %>
         <% if  user_signed_in? %>
           <%= button_to(
           "Log Out",
@@ -43,9 +45,6 @@
           <% end %>
         </div>
       </div>
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
-      <%= render partial: "layouts/flash_message" %>
       <%= yield %>
     </main>
   </body>

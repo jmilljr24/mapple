@@ -23,8 +23,8 @@ class SpatialsController < ApplicationController
     if @spatial.save
 
       respond_to do |format|
-        format.html { redirect root_path }
-        format.turbo_stream { flash.now[:notice] = "Position saved to database" }
+        format.html { redirect_to root_path, notice: "Tree Marker saved to database" }
+        format.turbo_stream { flash.now[:notice] = "Tree Marker saved to database" }
       end
     else
       respond_to do |format|
@@ -36,7 +36,7 @@ class SpatialsController < ApplicationController
   def update
     respond_to do |format|
       if @spatial.update(spatial_params)
-        format.html { redirect_to root_path, notice: "Tree was successfully updated." }
+        format.html { redirect_to root_path, notice: "Tree Marker was successfully updated." }
 
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -49,7 +49,7 @@ class SpatialsController < ApplicationController
     @spatial.destroy!
 
     respond_to do |format|
-      format.html { redirect_to root_path, notice: "Example was successfully destroyed." }
+      format.html { redirect_to root_path, notice: "Tree Marker was successfully deleted." }
       format.json { head :no_content }
     end
   end
