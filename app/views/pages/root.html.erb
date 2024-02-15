@@ -1,7 +1,20 @@
-<div data-controller="geolocation gmaps">
+<% boundary_points = [] %>
+<% all_points = [] %>
+<% factory = RGeo::Cartesian.factory %>
+<% current_user.spatials.each do |s| %>
+  <% unless s.lonlatheight.nil? %>
+    <% all_points << s.lonlatheight  %>
+  <% end %>
+<% end %>
+<% multipoint = factory.multi_point(all_points) %>
+<% multipoint.envelope.coordinates[0].each do |point| %>
+  <% boundary_points << [point[1], point[0]]  %>
+<% end %>
+<div data-controller="geolocation gmaps" data-gmaps-boundary-value="<%= boundary_points %>" >
   <div data-gmaps-api-value="<%= Rails.application.credentials.maps_api_key! %>"></div>
-  <div data-gmaps-target="maple" class="hidden"><%= image_path("mini2.png")%>
+  <div data-gmaps-target="maple" class="hidden"><%= image_path("mini3.png")%>
   </div>
+  <button data-action="gmaps#toggleBoundary">Toggle Boundary</button>
   <button data-action="geolocation#search">Retrieve Position</button>
   <%= render 'spatials/form', locals: { spatial: @spatial } %>
   <div id="map" data-gmaps-target="map" class="h-[50rem] w-[50rem]"></div>

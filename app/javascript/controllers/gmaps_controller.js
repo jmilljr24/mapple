@@ -2,24 +2,33 @@ import { Controller } from "@hotwired/stimulus";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
-let markers = [];
+let boundaryPoints;
+
 export default class extends Controller {
   static targets = ["map", "maple", "listings"];
   static values = {
     api: String,
+    boundary: Array,
   };
 
   connect() {
+    console.log(this.boundaryValue);
     this.map();
     window.onload = (event) => {
       this.markers();
-      console.log(this.listingsTarget.lastElementChild);
+      document
+        .getElementById("add-boundary")
+        .addEventListener("click", addBoundary);
+      document
+        .getElementById("remove-boundary")
+        .addEventListener("click", removeBoundary);
+
       let lastPosition = this.listingsTarget.lastElementChild;
       const latLng = new google.maps.LatLng(
         parseFloat(lastPosition.dataset.lat),
         parseFloat(lastPosition.dataset.lng)
       );
-      console.log(Object.getOwnPropertyNames(this.map()));
+
       this.map().panTo(latLng);
       this.map().setZoom(15);
     };
@@ -77,7 +86,9 @@ export default class extends Controller {
           "<br>" +
           " Lon: " +
           lng +
-          "</p> <br>" +
+          "</p> <p> ID: </p>" +
+          id +
+          "<br>" +
           '<a href="/spatials/' +
           id +
           '/edit">Edit</a>' +
@@ -114,6 +125,39 @@ export default class extends Controller {
   deleteMarkers({ params }) {
     if (confirm("Are you sure you want to delete this marker?") == true) {
       document.getElementById(params.id).click();
+    }
+  }
+  addBoundary(visable) {
+    const boundaryCoords = [
+      { lat: this.boundaryValue[0][0], lng: this.boundaryValue[0][1] },
+      { lat: this.boundaryValue[1][0], lng: this.boundaryValue[1][1] },
+      { lat: this.boundaryValue[2][0], lng: this.boundaryValue[2][1] },
+      { lat: this.boundaryValue[3][0], lng: this.boundaryValue[3][1] },
+    ];
+    // Construct the polygon.
+    boundaryPoints = new google.maps.Polygon({
+      paths: boundaryCoords,
+      strokeColor: "#FF0000",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#FF0000",
+      fillOpacity: 0.0,
+    });
+
+    boundaryPoints.setMap(this.map());
+  }
+  removeBoundary() {
+    boundaryPoints.setMap(null);
+  }
+
+  toggleBoundary() {
+    if (this._toggleBoundary == null) {
+      this.addBoundary(true);
+      return (this._toggleBoundary = true);
+    } else {
+      console.log(this._boundary);
+      this.removeBoundary(false);
+      return (this._toggleBoundary = null);
     }
   }
 }
