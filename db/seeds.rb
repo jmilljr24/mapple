@@ -8,7 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-user = User.first
+user = User.create!(email: "user@example.com", password: "123456")
 
 points = [
   [-75.0143314, 42.5048307, 499.5],
@@ -35,6 +35,7 @@ points = [
 ]
 
 points.each do |point|
-  s = user.spatials.build(lonlatheight: "POINT (#{point[0]} #{point[1]} #{point[2]})")
+  p s = user.spatials.build
+  p s.lonlatheight = "POINT(#{point[0]} #{point[1]} #{point[2]})"
   p s.save
 end
