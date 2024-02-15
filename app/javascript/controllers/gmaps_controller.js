@@ -3,6 +3,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 let boundaryPoints;
+let markerCluster;
 
 export default class extends Controller {
   static targets = ["map", "maple", "listings"];
@@ -117,7 +118,7 @@ export default class extends Controller {
   }
   markers() {
     this.adddbmarkers();
-    const markerCluster = new MarkerClusterer({
+    markerCluster = new MarkerClusterer({
       map: this._map,
       markers: this._markers,
     });
