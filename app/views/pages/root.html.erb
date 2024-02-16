@@ -15,8 +15,10 @@
   <div data-gmaps-api-value="<%= Rails.application.credentials.maps_api_key! %>"></div>
   <div data-gmaps-target="maple" class="hidden"><%= image_path("mini3.png")%>
   </div>
-  <button data-action="gmaps#toggleBoundary">Toggle Boundary</button>
-  <button data-action="geolocation#search">Retrieve Position</button>
+  <button data-action="gmaps#toggleBoundary">Toggle Boundary</button><br>
+  <button data-action="geolocation#search">Retrieve Position</button><br>
+  <button data-action="gmaps#markersInWindow">Markers in Window</button>
+  <p data-gmaps-target="count"></p>
   <%= render 'spatials/form', locals: { spatial: @spatial } %>
   <div id="map" data-gmaps-target="map" class="h-[50rem] w-[50rem]"></div>
   <ul role="listing" data-gmaps-target="listings">

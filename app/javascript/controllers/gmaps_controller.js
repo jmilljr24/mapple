@@ -2,27 +2,20 @@ import { Controller } from "@hotwired/stimulus";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
-let boundaryPoints;
-let markerCluster;
-
+let markers = new Array();
+let map;
 export default class extends Controller {
-  static targets = ["map", "maple", "listings"];
+  static targets = ["map", "maple", "listings", "count"];
   static values = {
     api: String,
     boundary: Array,
+    currentcount: Number,
   };
 
   connect() {
-    console.log(this.boundaryValue);
     this.map();
     window.onload = (event) => {
       this.markers();
-      document
-        .getElementById("add-boundary")
-        .addEventListener("click", addBoundary);
-      document
-        .getElementById("remove-boundary")
-        .addEventListener("click", removeBoundary);
 
       let lastPosition = this.listingsTarget.lastElementChild;
       const latLng = new google.maps.LatLng(
@@ -30,37 +23,38 @@ export default class extends Controller {
         parseFloat(lastPosition.dataset.lng)
       );
 
-      this.map().panTo(latLng);
-      this.map().setZoom(15);
+      map.panTo(latLng);
+      map.setZoom(15);
+      var placeMarkerListener = map.addListener("click", (e) => {
+        this.placeMarkerAndPanTo(e.latLng, map);
+      });
     };
   }
 
   map() {
-    if (this._map == undefined) {
-      const loader = new Loader({
-        apiKey: "AIzaSyBeMEgh-eLg7ul9BOXHsy4ZKbC7uM6vru0",
-        version: "quarterly",
-        libraries: ["maps", "marker"],
+    const loader = new Loader({
+      apiKey: "AIzaSyBeMEgh-eLg7ul9BOXHsy4ZKbC7uM6vru0",
+      version: "quarterly",
+      libraries: ["maps", "marker"],
+    });
+
+    const mapOptions = {
+      center: { lat: 40, lng: -75 },
+      zoom: 4,
+      mapTypeId: "terrain",
+      mapId: "DEMO_MAP_ID",
+    };
+
+    loader
+      .importLibrary("maps")
+      .then(({ Map }) => {
+        map = new Map(this.mapTarget, mapOptions);
+      })
+      .catch((e) => {
+        console.log(e);
       });
 
-      const mapOptions = {
-        center: { lat: 40, lng: -75 },
-        zoom: 4,
-        mapTypeId: "terrain",
-        mapId: "DEMO_MAP_ID",
-      };
-
-      loader
-        .importLibrary("maps")
-        .then(({ Map }) => {
-          this._map = new Map(this.mapTarget, mapOptions);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-
-    return this._map;
+    // return this._map;
   }
   marker(lat, lng, taps, id) {
     const latLng = new google.maps.LatLng(lat, lng);
@@ -69,7 +63,7 @@ export default class extends Controller {
 
     mapleIcon.src = this.mapleTarget.innerHTML;
     const marker = new google.maps.marker.AdvancedMarkerElement({
-      map: this.map(),
+      map: map,
       position: latLng,
       content: mapleIcon,
     });
@@ -87,9 +81,9 @@ export default class extends Controller {
           "<br>" +
           " Lon: " +
           lng +
-          "</p> <p> ID: </p>" +
+          "</p> <p> ID: " +
           id +
-          "<br>" +
+          "</p><br>" +
           '<a href="/spatials/' +
           id +
           '/edit">Edit</a>' +
@@ -101,13 +95,13 @@ export default class extends Controller {
       infoWindow.open(marker.map, marker);
     });
 
-    this._markers.push(marker);
+    markers.push(marker);
   }
   adddbmarkers() {
     Array.from(this.listingsTarget.children).forEach((listing) => {
-      if (this._markers == undefined) {
-        this._markers = [];
-      }
+      // if (this._markers == undefined) {
+      //   this._markers = [];
+      // }
       this.marker(
         parseFloat(listing.dataset.lat),
         parseFloat(listing.dataset.lng),
@@ -118,9 +112,9 @@ export default class extends Controller {
   }
   markers() {
     this.adddbmarkers();
-    markerCluster = new MarkerClusterer({
-      map: this._map,
-      markers: this._markers,
+    this.markerCluster = new MarkerClusterer({
+      map: map,
+      markers: markers,
     });
   }
   deleteMarkers({ params }) {
@@ -136,7 +130,7 @@ export default class extends Controller {
       { lat: this.boundaryValue[3][0], lng: this.boundaryValue[3][1] },
     ];
     // Construct the polygon.
-    boundaryPoints = new google.maps.Polygon({
+    this.boundaryPoints = new google.maps.Polygon({
       paths: boundaryCoords,
       strokeColor: "#FF0000",
       strokeOpacity: 0.8,
@@ -145,10 +139,11 @@ export default class extends Controller {
       fillOpacity: 0.0,
     });
 
-    boundaryPoints.setMap(this.map());
+    this.boundaryPoints.setMap(map);
+    console.log(this.markerCluster);
   }
   removeBoundary() {
-    boundaryPoints.setMap(null);
+    this.boundaryPoints.setMap(null);
   }
 
   toggleBoundary() {
@@ -160,5 +155,42 @@ export default class extends Controller {
       this.removeBoundary(false);
       return (this._toggleBoundary = null);
     }
+  }
+
+  markersInWindow() {
+    console.log("maker window");
+    let currentMarkerCount = 0;
+
+    map.addListener("bounds_changed", function () {
+      currentMarkerCount = 0;
+      for (var i = 0; i < markers.length; i++) {
+        if (map.getBounds().contains(markers[i].position)) {
+          currentMarkerCount++;
+
+          // markers[i] in visible bounds
+        } else {
+          // markers[i] is not in visible bounds
+        }
+      }
+      document.querySelector('[data-gmaps-target="count"]').innerHTML =
+        currentMarkerCount;
+    });
+  }
+
+  placeMarkerAndPanTo(latLng, map) {
+    console.log("placemaker");
+    new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+    map.panTo(latLng);
+  }
+
+  disconnect() {
+    google.maps.event.removeListener(
+      addBoundaryListener,
+      removeBoundaryListener,
+      placeMarkerListener
+    );
   }
 }
